@@ -97,6 +97,7 @@ defmodule CollabiqId do
     |> Enum.reduce(%{}, fn
       {key, value}, acc when not is_nil(value) ->
         if key in out_keys() do
+          value = to_string(value)
           Map.put(acc, key, Base.url_encode64(value, padding: false))
         else
           Map.put(acc, key, value)

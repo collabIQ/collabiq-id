@@ -4,7 +4,7 @@ defmodule CollabiqId.MixProject do
   def project do
     [
       app: :collabiq_id,
-      version: "0.1.0",
+      version: "0.1.1",
       elixir: "~> 1.9",
       test_coverage: [tool: ExCoveralls],
       preferred_cli_env: [
@@ -30,7 +30,8 @@ defmodule CollabiqId.MixProject do
     [
       {:elixir_uuid, "~> 1.2"},
       {:excoveralls, "~> 0.12.2", only: :test},
-      {:credo, "~> 1.2", only: [:dev, :test], runtime: false}
+      {:credo, "~> 1.2", only: [:dev, :test], runtime: false},
+      {:hashids, "~> 2.0"}
     ]
   end
 end
