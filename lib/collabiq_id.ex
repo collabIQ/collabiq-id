@@ -48,7 +48,7 @@ defmodule CollabiqId do
     Enum.flat_map(map, fn {key, value} ->
       with true <- key in in_keys(),
            {:error, error} <- validate_base64_id(value, key) do
-        {:error, error}
+        error
       else
         _ ->
           []
