@@ -57,16 +57,19 @@ defmodule CollabiqId do
   end
 
   defp base64_in_convert(map) do
-    Enum.map(map, fn
-      {key, value} ->
-        if key in in_keys() do
-          {:ok, id} = validate_base64_id(value, key)
-          {key, id}
-        else
-          {key, value}
-        end
-    end)
-    |> Enum.into(%{})
+    map =
+      Enum.map(map, fn
+        {key, value} ->
+          if key in in_keys() do
+            {:ok, id} = validate_base64_id(value, key)
+            {key, id}
+          else
+            {key, value}
+          end
+      end)
+      |> Enum.into(%{})
+
+    {:ok, map}
   end
 
   @default_out_keys [
