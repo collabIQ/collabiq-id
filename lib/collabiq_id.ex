@@ -12,8 +12,18 @@ defmodule CollabiqId do
   def base64_in([] = list), do: list
 
   def base64_in([_ | _] = list) do
-    list
-    |> Enum.map(&base64_in/1)
+    list = Enum.map(list, &base64_in/1)
+
+    errors = Enum.reduce(list, [], fn {:error, error}, acc -> [ error | acc ] end)
+
+    case errors do
+      [] ->
+        {:error, errors}
+
+      _ ->
+        result = Enum.reduce(list, [], fn {:ok, object}, acc -> [ object | acc ] end)
+        {:ok, result}
+    end
   end
 
   def base64_in(%_{} = struct) do
