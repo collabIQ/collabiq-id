@@ -4,7 +4,7 @@ defmodule CollabiqId.MixProject do
   def project do
     [
       app: :collabiq_id,
-      version: "0.1.2",
+      version: "0.1.3",
       elixir: "~> 1.9",
       test_coverage: [tool: ExCoveralls],
       preferred_cli_env: [
