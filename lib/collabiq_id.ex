@@ -5,6 +5,54 @@ defmodule CollabiqId do
     :site_id
   ]
 
+  def base_in(id) do
+    with {:ok, id} <- validate_base_id(id),
+         {:ok, id} <- validate_int_id(id) do
+      {:ok, id}
+    else
+      error ->
+        error
+    end
+  end
+
+  def base_out(id) do
+    with {:ok, id} <- validate_int_id(id),
+         id <- id |> to_string() |> Base.url_encode64() do
+      {:ok, id}
+    else
+      error ->
+        error
+    end
+  end
+
+  def validate_base_id(id) when is_binary(id) do
+    case Base.url_decode64(id, padding: false) do
+      {:ok, id} ->
+        {:ok, id}
+
+      _ ->
+        {:error, %{key: "id", code: "invalid"}}
+    end
+  end
+
+  def validate_base_id(_), do: {:error, %{key: "id", code: "invalid"}}
+
+  def validate_int_id(id) when is_binary(id) do
+    try do
+      String.to_integer(id)
+    rescue
+      _ ->
+        {:error, %{key: "id", code: "invalid"}}
+    else
+      id ->
+        {:ok, id}
+    end
+  end
+
+  def validate_int_id(id) when is_integer(id), do: {:ok, id}
+
+  def validate_int_id(_), do: {:error, %{key: "id", code: "invalid"}}
+
   defp in_keys() do
     Application.get_env(:collabiq_id, :in_keys) || @default_in_keys
   end
